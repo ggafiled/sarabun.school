@@ -71,8 +71,8 @@ Thank you for considering contributing to the Laravel framework! The contributio
 In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 พัฒนาเว็บไซต์ด้วย laravel framework + mysql (Eloquent) + bootstrap เป็นเว็บไซต์เกี่ยวกับการจัดการระบบสารบรรณในโรงเรียน
 ### ตัวอย่างหน้าจอการใช้งาน
-[UI](public/images/sarabun.school.dashboard.PNG)
-[UI](public/images/sarabun.school.search.png)
+[UI](https://github.com/ggafiled/sarabun.school/blob/master/public/images/sarabun.school.dashboard.PNG)
+[UI](https://github.com/ggafiled/sarabun.school/blob/master/public/images/sarabun.school.search.png)
 
 ## Security Vulnerabilities
 

@@ -71,9 +71,11 @@ Thank you for considering contributing to the Laravel framework! The contributio
 In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 พัฒนาเว็บไซต์ด้วย laravel framework + mysql (Eloquent) + bootstrap เป็นเว็บไซต์เกี่ยวกับการจัดการระบบสารบรรณในโรงเรียน
 ### ตัวอย่างหน้าจอการใช้งาน
-![UI](https://github.com/ggafiled/sarabun.school/blob/master/public/images/sarabun.school.dashboard.PNG?raw=true)
-![UI](https://github.com/ggafiled/sarabun.school/blob/master/public/images/sarabun.school.search.png?raw=true)
-
+![หน้า Dashboard](https://github.com/ggafiled/sarabun.school/blob/master/public/images/sarabun.school.dashboard.PNG?raw=true)
+![หน้า Search](https://github.com/ggafiled/sarabun.school/blob/master/public/images/sarabun.school.search.png?raw=true)
+![UI](https://github.com/ggafiled/sarabun.school/blob/master/public/images/sarabun.school.edit.png?raw=true)
+![UI](https://github.com/ggafiled/sarabun.school/blob/master/public/images/sarabun.school.comfirmpassword.png?raw=true)
+![UI](https://github.com/ggafiled/sarabun.school/blob/master/public/images/sarabun.school.search.pngsarabun.school.admin.usermanagement.png
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.

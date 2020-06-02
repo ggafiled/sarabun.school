@@ -87,31 +87,6 @@
                                     <i class="fas fa-file-excel"></i></span> Excel
                                 </a></p>
                     </form>
-                    <div class="modal fade" id="modal-default-edit">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title">แก้ไขข้อมูล</h4>
-                                </div>
-
-                                <form>
-                                    <div class="modal-body ">
-
-                                        <input type="hidden">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default pull-left"
-                                            data-dismiss="modal">Close</button>
-                                        <button type="submit" id="submit" class="btn btn-primary">
-                                            Save
-                                            changes</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row mx-auto">
                         <table id="tableSending" class="table table-bordered table-striped w-100">
                             <thead>
@@ -156,246 +131,251 @@
 
 @section('css')
 <style>
-td.details-control {
-    background: url("{{ URL::to('/') }}/images/details_open.png") no-repeat center center;
-    cursor: pointer;
-}
+    td.details-control {
+        background: url("{{ URL::to('/') }}/images/details_open.png") no-repeat center center;
+        cursor: pointer;
+    }
 
-tr.shown td.details-control {
-    background: url("{{ URL::to('/') }}/images/details_close.png") no-repeat center center;
-}
+    tr.shown td.details-control {
+        background: url("{{ URL::to('/') }}/images/details_close.png") no-repeat center center;
+    }
 
-.dataTables_filter {
-    display: none;
-}
+    .dataTables_filter {
+        display: none;
+    }
 </style>
 <style lang="scss">
-.subtable-file-list+.subtable-file-list {
-    margin-bottom: 1px
-}
+    .subtable-file-list+.subtable-file-list {
+        margin-bottom: 1px
+    }
 
-div#tableSending_wrapper {
-    width: 100% !important;
-}
+    div#tableSending_wrapper {
+        width: 100% !important;
+    }
 </style>
 @stop
 
 @section('js')
 <script src="{{ asset('js/app.js') }}"></script>
 <script lang="text/javascript">
-function formatForfileLoop(d) {
-    var fileType = {
-        'pdf': "<i class='far fa-file-pdf text-danger'></i>",
-        'docx': "<i class='far fa-file-word text-primary'></i>",
-        'doc': "<i class='far fa-file-word text-primary'></i>",
-        'xls': "<i class='far fa-file-excel text-success'></i>",
-        'xlsx': "<i class='far fa-file-excel text-success'></i>",
-        'ppt': "<i class='far fa-file-powerpoint text-warning'></i>",
-        'pptx': "<i class='far fa-file-powerpoint text-warning'></i>",
-        'zip,rar': "<i class='far fa-file-archive'></i>",
-        'txt': "<i class='far fa-file-alt text-secondary'></i>",
-        'png,jpeg,jpg': "<i class='far fa-file-image'></i>",
-    };
-    // `d` is the original data object for the row
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-        '<tr>' +
-        '<td>เลขที่ทะเบียนส่ง:</td>' +
-        '<td>' + d.id + '</td>' +
-        '</tr>' +
-        '<tr>' +
-        '<td>ไฟล์แนบ:</td>' +
-        '<td>' + d.attach_file.map((file) => {
-            var icon = fileType[file.extension] || "<i class='far fa-question-circle'></i>";
-            return "<div class='subtable-file-list'>" + icon +
-                "<a class='ml-2' href='{{ URL::to('/') }}/retrieveFile/" +
-                file.filename + "'>" +
-                file.originalname + "</a></div>"
-        }) +
-        '</td>' +
-        '</tr>' +
-        '</table>';
-}
+    function formatForfileLoop(d) {
 
-function formatForNotHavefileLoop(d) {
-    // `d` is the original data object for the row
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-        '<tr>' +
-        '<td>เลขที่ทะเบียนส่ง:</td>' +
-        '<td>' + d.id + '</td>' +
-        '</tr>' +
-        '<tr>' +
-        '<td>ไฟล์แนบ:</td>' +
-        '<td> ไม่มีไฟล์แนบ </td>' +
-        '</tr>' +
-        '</table>';
-}
+        var fileType = {
+            'pdf': "<i class='far fa-file-pdf text-danger'></i>",
+            'docx': "<i class='far fa-file-word text-primary'></i>",
+            'doc': "<i class='far fa-file-word text-primary'></i>",
+            'xls': "<i class='far fa-file-excel text-success'></i>",
+            'xlsx': "<i class='far fa-file-excel text-success'></i>",
+            'ppt': "<i class='far fa-file-powerpoint text-warning'></i>",
+            'pptx': "<i class='far fa-file-powerpoint text-warning'></i>",
+            'zip,rar': "<i class='far fa-file-archive'></i>",
+            'txt': "<i class='far fa-file-alt text-secondary'></i>",
+            'png' : "<i class='far fa-file-image'></i>",
+            'jpeg' : "<i class='far fa-file-image'></i>",
+            'jpg' : "<i class='far fa-file-image'></i>",
+        };
+        // `d` is the original data object for the row
+        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+            '<tr>' +
+            '<td>เลขที่ทะเบียนส่ง:</td>' +
+            '<td>' + d.id + '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>ไฟล์แนบ:</td>' +
+            '<td>' + d.attach_file.map((file) => {
+                var icon = fileType[file.extension] || "<i class='far fa-question-circle'></i>";
+                return "<div class='subtable-file-list'>" + icon +
+                    "<a class='ml-2' href='{{ URL::to('/') }}/retrieveFile/" +
+                    file.filename + "' target='_blank' >" +
+                    file.originalname + "</a></div>"
+            }) +
+            '</td>' +
+            '</tr>' +
+            '</table>';
+    }
 
-$(document).ready(function() {
+    function formatForNotHavefileLoop(d) {
+        // `d` is the original data object for the row
+        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+            '<tr>' +
+            '<td>เลขที่ทะเบียนส่ง:</td>' +
+            '<td>' + d.run_no + '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>ไฟล์แนบ:</td>' +
+            '<td> ไม่มีไฟล์แนบ </td>' +
+            '</tr>' +
+            '</table>';
+    }
 
-    $("#title").focus();
+    $(document).ready(function () {
 
-    var table = $('#tableSending').DataTable({
-        processing: true,
-        serverSide: true,
-        retrieve: true,
-        orderCellsTop: true,
-        fixedHeader: true,
-        ajax: "{{ url('api/sendingcontent') }}",
-        columns: [{
-                className: 'details-control',
-                orderable: false,
-                data: null,
-                defaultContent: ''
-            },
-            {
-                data: 'document_no'
-            },
-            {
-                data: 'title'
-            },
-            {
-                data: 'source'
-            },
-            {
-                data: 'destination'
-            },
-            {
-                data: 'user.name'
-            },
-            {
-                data: 'document_created_at'
-            },
-            {
-                data: 'note'
-            },
-            {
-                className: 'data-control',
-                orderable: false,
-                render: function(data, type, row) {
-                    return "<div class='d-flex justify-content-around'>" +
-                        "<div class='btn btn-sm btn-danger btn-delete'> ลบ </div>" +
-                        "<div class='btn btn-sm btn-warning btn-edit'> แก้ไข </div>" +
-                        "</div>";
-                },
-            }
-        ]
-    });
-
-    $('#tableSending tbody').on('click', 'td.details-control', function() {
-        var tr = $(this).closest('tr');
-        var row = table.row(tr);
-
-        if (row.child.isShown()) {
-            // This row is already open - close it
-            row.child.hide();
-            tr.removeClass('shown');
-        } else {
-            // Open this row
-            var objLenght = Object.keys(row.data().attach_file).length;
-            console.log(objLenght);
-            if (objLenght > 0) {
-                row.child(formatForfileLoop(row.data())).show();
-            } else {
-                row.child(formatForNotHavefileLoop(row.data())).show();
-            }
-            tr.addClass('shown');
-        }
-    });
-
-    $('#tableSending tbody').on('click', 'td.data-control .btn-delete', function(e) {
-        e.preventDefault();
-        var tr = $(this).closest('tr');
-        var row = table.row(tr);
-        var document = table.row(row).data();
-        console.info(document);
-        if (document != null) {
-            swal("ต้องการลบข้อมูลคุมทะเบียนนี้ใช่หรือไม่?", "เรื่อง " + document.title, {
-                dangerMode: true,
-                buttons: {
-                    cancel: "ยกเลิก",
-                    confirm: "ยืนยัน",
-                },
-            }).then((val) => {
-                if (val) {
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    $.ajax("/deleteFileAndData/" + document.id, {
-                        type: 'POST',
-                        success: function(data, status, xhr) {
-                            swal("รายงานผล", "ลบข้อมูลคุมทะเบียนสำเร็จแล้ว",
-                                "success");
-                            table.search('').columns().search('').draw();
-                        },
-                        error: function(jqXhr, textStatus, errorMessage) {
-                            swal("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
-                                "error");
-                        }
-                    });
-                }
-            });
-        }
-    });
-
-    $('#tableSending tbody').on('click', 'td.data-control .btn-edit', function(e) {
-        e.preventDefault();
-        var tr = $(this).closest('tr');
-        var row = table.row(tr);
-        var document = table.row(row).data();
-        if (document != null) {
-            window.location.href =
-                `{{URL::to('form/sending-add')}}?documentid=${document.id}&editmode=true`
-        }
-    });
-
-    $('#sending_no', this).on('keyup change', function() {
-        if (table.column(1).search() !== this.value) {
-            table
-                .column(1)
-                .search(this.value)
-                .draw();
-        }
-    });
-
-    $('#title', this).on('keyup change', function() {
-        if (table.column(2).search() !== this.value) {
-            table
-                .column(2)
-                .search(this.value)
-                .draw();
-        }
-    });
-
-    $('#destination', this).on('keyup change', function() {
-        if (table.column(4).search() !== this.value) {
-            table
-                .column(4)
-                .search(this.value)
-                .draw();
-        }
-    });
-
-    $('#document_created_at', this).on('keyup change', function() {
-        if (table.column(6).search() !== this.value) {
-            table
-                .column(6)
-                .search(this.value)
-                .draw();
-        }
-    });
-
-    $('#btn-clear').on('click', function() {
-        var today = new Date().toISOString().split('T')[0];
-        $("#sending_no").val('');
-        $("#title").val('');
-        $("#destination").val('');
-        $("#document_created_at").val(today);
         $("#title").focus();
-        table.search('').columns().search('').draw();
+
+        var table = $('#tableSending').DataTable({
+            processing: true,
+            serverSide: true,
+            retrieve: true,
+            orderCellsTop: true,
+            fixedHeader: true,
+            ajax: "{{ url('api/sendingcontent') }}",
+            columns: [{
+                    className: 'details-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: ''
+                },
+                {
+                    data: 'document_no'
+                },
+                {
+                    data: 'title'
+                },
+                {
+                    data: 'source'
+                },
+                {
+                    data: 'destination'
+                },
+                {
+                    data: 'user.name'
+                },
+                {
+                    data: 'document_created_at'
+                },
+                {
+                    data: 'note'
+                },
+                {
+                    className: 'data-control',
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return "<div class='d-flex justify-content-around'>" +
+                            "<div class='btn btn-sm btn-danger btn-delete'> ลบ </div>" +
+                            "<div class='btn btn-sm btn-warning btn-edit'> แก้ไข </div>" +
+                            "</div>";
+                    },
+                }
+            ]
+        });
+
+        $('#tableSending tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            } else {
+                // Open this row
+                var objLenght = Object.keys(row.data().attach_file).length;
+                console.log(objLenght);
+                if (objLenght > 0) {
+                    row.child(formatForfileLoop(row.data())).show();
+                } else {
+                    row.child(formatForNotHavefileLoop(row.data())).show();
+                }
+                tr.addClass('shown');
+            }
+        });
+
+        $('#tableSending tbody').on('click', 'td.data-control .btn-delete', function (e) {
+            e.preventDefault();
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+            var document = table.row(row).data();
+            console.info(document);
+            if (document != null) {
+                swal("ต้องการลบข้อมูลคุมทะเบียนนี้ใช่หรือไม่?", "เรื่อง " + document.title, {
+                    dangerMode: true,
+                    buttons: {
+                        cancel: "ยกเลิก",
+                        confirm: "ยืนยัน",
+                    },
+                }).then((val) => {
+                    if (val) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                    'content')
+                            }
+                        });
+                        $.ajax("/deleteFileAndData/" + document.id, {
+                            type: 'POST',
+                            success: function (data, status, xhr) {
+                                swal("รายงานผล", "ลบข้อมูลคุมทะเบียนสำเร็จแล้ว",
+                                    "success");
+                                table.search('').columns().search('').draw();
+                            },
+                            error: function (jqXhr, textStatus, errorMessage) {
+                                swal("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
+                                    "error");
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        $('#tableSending tbody').on('click', 'td.data-control .btn-edit', function (e) {
+            e.preventDefault();
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+            var document = table.row(row).data();
+            if (document != null) {
+                window.location.href =
+                    `{{URL::to('form/sending-add')}}?documentid=${document.id}&editmode=true`
+            }
+        });
+
+        $('#sending_no', this).on('keyup change', function () {
+            if (table.column(1).search() !== this.value) {
+                table
+                    .column(1)
+                    .search(this.value)
+                    .draw();
+            }
+        });
+
+        $('#title', this).on('keyup change', function () {
+            if (table.column(2).search() !== this.value) {
+                table
+                    .column(2)
+                    .search(this.value)
+                    .draw();
+            }
+        });
+
+        $('#destination', this).on('keyup change', function () {
+            if (table.column(4).search() !== this.value) {
+                table
+                    .column(4)
+                    .search(this.value)
+                    .draw();
+            }
+        });
+
+        $('#document_created_at', this).on('keyup change', function () {
+            if (table.column(6).search() !== this.value) {
+                table
+                    .column(6)
+                    .search(this.value)
+                    .draw();
+            }
+        });
+
+        $('#btn-clear').on('click', function () {
+            var today = new Date().toISOString().split('T')[0];
+            $("#sending_no").val('');
+            $("#title").val('');
+            $("#destination").val('');
+            $("#document_created_at").val(today);
+            $("#title").focus();
+            table.search('').columns().search('').draw();
+        });
+
     });
 
-});
 </script>
 @stop

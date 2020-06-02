@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Cache;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,6 +12,7 @@ use App\Notifications\ResetPassword as ResetPasswordNotification;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
+    use \HighIdeas\UsersOnline\Traits\UsersOnlineTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -47,5 +49,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function document()
     {
         return $this->hasMany(Document::class);
+    }
+
+    public function isOnline()
+    {
+        return Cache::has('user-is-online-' . $this->id);
     }
 }

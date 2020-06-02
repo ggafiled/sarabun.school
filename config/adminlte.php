@@ -260,7 +260,7 @@ return [
                 ],
                 [
                     'text' => 'สืบค้นข้อมูลคำสั่ง',
-                    'url' => '#',
+                    'url' => 'form/command-search',
                 ],
             ],
         ],
@@ -275,14 +275,14 @@ return [
                 ],
                 [
                     'text' => 'สืบค้นข้อมูลบันทึกข้อความ',
-                    'url' => '#',
+                    'url' => 'form/memorandum-search',
                 ],
             ],
         ],
         ['header' => 'ระบบจัดการ'],
         [
             'text' => 'ข้อมูลผู้ใช้งาน',
-            'url'  => 'admin/settings',
+            'url'  => 'form/usermanagement',
             'icon' => 'fas fa-fw fa-user',
         ],
         [

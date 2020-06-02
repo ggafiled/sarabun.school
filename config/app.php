@@ -189,6 +189,7 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 
@@ -245,6 +246,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

@@ -26,11 +26,13 @@ Route::get('locale/{locale}', function ($locale){
     return redirect()->back();
 });
 
+// Logs view 
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
+// Home page view 
 Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');
 
 Route::middleware(['auth'])->group( function () {
-
-    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
     Route::get('form/sending-add','DocumentController@sendingForm')->name('form.sending-add'); 
 
@@ -40,27 +42,26 @@ Route::middleware(['auth'])->group( function () {
 
     Route::get('form/receiving-search','DocumentController@receivingSearchForm'); 
 
-    Route::get('form/command-add', function () {
-        return view('command.command');
-    }); 
+    Route::get('form/usermanagement','AdminController@usermanagementForm')->name('form.usermanagementForm'); 
 
-    Route::get('form/command-search', function () {
-        return view('command.command');
-    }); 
+    Route::get('form/command-add','DocumentController@commandForm')->name('form.command-add'); ; 
 
-    Route::get('form/memorandum-add', function () {
-        return view('memorandum.memorandum');   
-    }); 
+    Route::get('form/command-search','DocumentController@commandSearchForm'); 
 
-    Route::get('form/memorandum-search', function () {
-        return view('memorandum.memorandum');   
-    }); 
+    Route::get('form/memorandum-add','DocumentController@memorandumForm')->name('form.memorandum-add'); ; 
+
+    Route::get('form/memorandum-search','DocumentController@memorandumSearchForm'); 
 
     Route::get('form/editmypassword','HomeController@showChangePasswordForm')->middleware('password.confirm');
+    
 
     Route::post('changePassword','HomeController@changePassword')->name('changePassword');
 
     Route::post('storeFileAndData','DocumentController@storeFileAndData');
+
+    Route::post('deleteFile/{fileid}','DocumentController@deleteFile');
+
+    Route::post('renameFile', 'DocumentController@renameFile');
 
     Route::post('deleteFileAndData/{documentid}', 'DocumentController@deleteFileAndData');
 

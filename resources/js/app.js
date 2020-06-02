@@ -7,6 +7,14 @@
 require('./bootstrap');
 window.Vue = require('vue');
 import $ from 'jquery';
+import Swal from 'sweetalert2';
+
+$.fn.focusTextToEnd = function() {
+    this.focus();
+    var $thisVal = this.val();
+    this.val('').val($thisVal);
+    return this;
+}
 
 /**
  * The following block of code may be used to automatically register your

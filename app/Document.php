@@ -8,12 +8,14 @@ class Document extends Model
 {
     protected $table = "documents";
     protected $fillable = [
+        'run_no',
         'document_no',
         'title',
         'source',
         'destination',
         'note',
-      'document_type_id'
+        'user_id',
+        'document_type_id'
     ];
 
     public function user()

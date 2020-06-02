@@ -15,27 +15,16 @@ class CreateDocumentsTable extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->string('document_no');
-            $table->string('title');
-            $table->string('source');
-            $table->string('destination');
-            $table->string('note');
-            $table->integer('document_type_id')->unsigned();
+            $table->integer('run_no')->unsigned()->default(0)->index();
+            $table->string('document_no')->nullable();
+            $table->string('title')->nullable();
+            $table->string('source')->nullable();
+            $table->string('destination')->nullable();
+            $table->string('note')->nullable();
+            $table->integer('document_type_id')->unsigned()->nullable();
             $table->integer('user_id')->unsigned()->index();
-            $table->integer('attach_file_id')->unsigned();
+            $table->date("document_created_at")->nullable();
             $table->timestamps();
-            $table->foreign('user_id')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
-            $table->foreign('document_type_id')
-                  ->references('id')
-                  ->on('document_types')
-                  ->onDelete('cascade');
-            $table->foreign('attach_file_id')
-                  ->references('id')
-                  ->on('attach_files')
-                  ->onDelete('cascade');
         });
     }
 

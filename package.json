@@ -28,6 +28,7 @@
         "datatables": "^1.10.18",
         "datatables.net": "^1.10.21",
         "popover": "^2.4.1",
+        "sweetalert2": "^9.14.0",
         "vue-cli": "^2.9.6",
         "vue-progressbar": "^0.7.5"
     }

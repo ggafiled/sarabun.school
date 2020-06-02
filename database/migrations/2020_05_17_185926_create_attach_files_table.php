@@ -16,14 +16,11 @@ class CreateAttachFilesTable extends Migration
         Schema::create('attach_files', function (Blueprint $table) {
             $table->id();
             $table->string('filename');
-            $table->integer('user_id')->unsigned()->index();
+            $table->string('extension');
+            $table->string('originalname');
+            $table->integer('document_id')->unsigned();
             $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('user_id')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
         });
     }
 

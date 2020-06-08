@@ -69,64 +69,68 @@ $fileType = array('pdf'=> "<i class='far fa-file-pdf text-danger'></i>",
     });
 
     function attachfileRenameAction(file) {
-        swal({
-                text: 'เปลี่ยนชื่อไฟล์',
-                content: {
-                    element: 'input',
-                    attributes: {
-                        defaultValue: file.originalname,
-                    }
-                },
-                button: {
-                    text: "เปลี่ยน",
-                    closeModal: false,
-                },
-            })
-            .then(rename => {
-                if (!rename) return null;
+        Swal.fire({
+            title: '<h4>เปลี่ยนชื่อไฟล์</h4>',
+            html: '<input type="text" id="newfilename" class="swal2-input form-control" value="' + file
+                .originalname + '"></input>',
+            confirmButtonText: 'บันทึก',
+            preConfirm: () => {
+                let newfilename = Swal.getPopup().querySelector('#newfilename').value
+                if (newfilename === '') {
+                    Swal.showValidationMessage(`ชื่อไฟล์ไม่สามารถว่างไว้ได้`)
+                }
+                return {
+                    newfilename: newfilename
+                }
+            }
+        }).then(result => {
+            if (!result.value.newfilename) return null;
 
-                var formData = new FormData();
-                formData.append("_token", "{{ csrf_token() }}");
-                formData.append("fileid", file.id);
-                formData.append("newname", rename.trim());
+            var formData = new FormData();
+            formData.append("_token", "{{ csrf_token() }}");
+            formData.append("fileid", file.id);
+            formData.append("newname", result.value.newfilename.trim());
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax("/renameFile", {
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (data, status, xhr) {
-                        console.log("Success");
-                        swal("รายงานผล", "ลบข้อมูลคุมทะเบียนสำเร็จแล้ว",
-                            "success").then(function () {
-                            location.reload();
-                        });
-                    },
-                    error: function (jqXhr, textStatus, errorMessage) {
-                        console.log("failed");
-                        swal("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
-                            "error").then(function () {
-                            location.reload();
-                        });
-                    }
-                });
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
+            $.ajax("/renameFile", {
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data, status, xhr) {
+                    console.log("Success");
+                    Swal.fire("รายงานผล", "ลบข้อมูลคุมทะเบียนสำเร็จแล้ว",
+                        "success").then(function () {
+                        location.reload();
+                    });
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    console.log("failed");
+                    Swal.fire("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
+                        "error").then(function () {
+                        location.reload();
+                    });
+                }
+            });
+        });
     }
 
     function attachfileDeleteAction(file) {
-        swal("ต้องการลบไฟล์แนบนี้ใช่หรือไม่?", file.originalname, {
-            dangerMode: true,
-            buttons: {
-                cancel: "ยกเลิก",
-                confirm: "ยืนยัน",
-            },
-        }).then(function (val) {
-            if (val) {
+        Swal.fire({
+            title: 'ต้องการลบไฟล์แนบนี้ใช่หรือไม่?',
+            text: file.originalname,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'ยกเลิก',
+            confirmButtonText: 'ลบ'
+        }).then((result) => {
+            if (result.value) {
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -135,22 +139,19 @@ $fileType = array('pdf'=> "<i class='far fa-file-pdf text-danger'></i>",
                 $.ajax("/deleteFile/" + file.id, {
                     type: 'POST',
                     success: function (data, status, xhr) {
-                        swal("รายงานผล", "ลบไฟล์แนบสำเร็จแล้ว",
+                        Swal.fire("รายงานผล", "ลบไฟล์แนบสำเร็จแล้ว",
                             "success").then(function () {
-                            $("#file-list").load($(this).attr('href'));
-                            // location.reload();
+                            location.reload();
                         });
                     },
                     error: function (jqXhr, textStatus, errorMessage) {
-                        swal("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
+                        Swal.fire("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
                             "error").then(function () {
-                            $("#file-list").load($(this).attr('href'));
                             // location.reload();
                         });
                     }
                 });
             }
-
         });
     }
 

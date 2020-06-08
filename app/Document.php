@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Enums\DocumentType;
 use Illuminate\Database\Eloquent\Model;
 
 class Document extends Model
@@ -26,5 +27,16 @@ class Document extends Model
     public function attach_file()
     {
       return $this->hasMany(AttachFiles::class,'document_id','id');
+    }
+
+    public function getDocumentLastIdFor($documentType)
+    {
+        $lastid = $this->where('document_type_id',$documentType)->orderBy('run_no', 'desc')->first();
+        if($lastid!=null) {
+            $lastid = $lastid->run_no + 1;
+        }else {
+            $lastid = 1;
+        }
+        return $lastid;
     }
 }

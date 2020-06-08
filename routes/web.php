@@ -52,8 +52,9 @@ Route::middleware(['auth'])->group( function () {
 
     Route::get('form/memorandum-search','DocumentController@memorandumSearchForm'); 
 
-    Route::get('form/editmypassword','HomeController@showChangePasswordForm')->middleware('password.confirm');
+    Route::get('form/editprofile','UserController@showChangePasswordForm')->middleware('password.confirm');
     
+    Route::post('setUserImage','UserController@setUserImage');
 
     Route::post('changePassword','HomeController@changePassword')->name('changePassword');
 

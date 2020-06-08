@@ -138,7 +138,7 @@
                     $('#run_no').val(data);
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
-                    swal("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
+                    Swal.fire("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
                         "error");
                 }
             });
@@ -177,6 +177,7 @@
                 formData.append("user", "{{ Auth::user()->id }}");
                 formData.append("editmode", "{{ $editmode }}");
                 formData.append("note", $("#note").val());
+                $("#submit-all").prop('disabled', true);
 
                 if (dzClosure.getQueuedFiles().length > 0) {
                     dzClosure.processQueue();
@@ -194,17 +195,21 @@
                         contentType: false,
                         success: function (data, status, xhr) {
                             var today = new Date().toISOString().split('T')[0];
-                            swal("รายงานผล", "บันทึกคำสั่งสำเร็จแล้ว", "success");
-                            $("#id").val('');
-                            $("#document_no").val('');
-                            $("#document_created_at").val(today);
-                            $("#title").val('');
-                            $("#note").val('');
-                            $("#document_no").focusTextToEnd();
-                            location.reload();
+                            Swal.fire("รายงานผล", "บันทึกคำสั่งสำเร็จแล้ว", "success").then(
+                                function () {
+                                    $("#id").val('');
+                                    $("#document_no").val('');
+                                    $("#document_created_at").val(today);
+                                    $("#title").val('');
+                                    $("#note").val('');
+                                    $("#document_no").focusTextToEnd();
+                                    $("#submit-all").prop('disabled', false);
+                                    location.reload();
+                                });
                         },
                         error: function (jqXhr, textStatus, errorMessage) {
-                            swal("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
+                            $("#submit-all").prop('disabled', false);
+                            Swal.fire("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
                                 "error");
                         }
                     });
@@ -260,15 +265,17 @@
 
             this.on("success", function (file, responseText) {
                 var today = new Date().toISOString().split('T')[0];
-                swal("รายงานผล", "บันทึกคำสั่งสำเร็จแล้ว", "success");
-                $("#id").val('');
-                $("#document_no").val('');
-                $("#document_created_at").val(today);
-                $("#title").val('');
-                $("#note").val('');
-                this.removeAllFiles();
-                $("#document_no").focusTextToEnd();
-                location.reload();
+                Swal.fire("รายงานผล", "บันทึกคำสั่งสำเร็จแล้ว", "success").then(function () {
+                    $("#id").val('');
+                    $("#document_no").val('');
+                    $("#document_created_at").val(today);
+                    $("#title").val('');
+                    $("#note").val('');
+                    // this.removeAllFiles();
+                    $("#document_no").focusTextToEnd();
+                    $("#submit-all").prop('disabled', false);
+                    location.reload();
+                });
             });
         }
     }

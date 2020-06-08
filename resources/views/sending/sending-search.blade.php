@@ -170,15 +170,15 @@
             'pptx': "<i class='far fa-file-powerpoint text-warning'></i>",
             'zip,rar': "<i class='far fa-file-archive'></i>",
             'txt': "<i class='far fa-file-alt text-secondary'></i>",
-            'png' : "<i class='far fa-file-image'></i>",
-            'jpeg' : "<i class='far fa-file-image'></i>",
-            'jpg' : "<i class='far fa-file-image'></i>",
+            'png': "<i class='far fa-file-image'></i>",
+            'jpeg': "<i class='far fa-file-image'></i>",
+            'jpg': "<i class='far fa-file-image'></i>",
         };
         // `d` is the original data object for the row
         return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
             '<tr>' +
             '<td>เลขที่ทะเบียนส่ง:</td>' +
-            '<td>' + d.id + '</td>' +
+            '<td>' + d.run_no + '</td>' +
             '</tr>' +
             '<tr>' +
             '<td>ไฟล์แนบ:</td>' +
@@ -287,14 +287,17 @@
             var document = table.row(row).data();
             console.info(document);
             if (document != null) {
-                swal("ต้องการลบข้อมูลคุมทะเบียนนี้ใช่หรือไม่?", "เรื่อง " + document.title, {
-                    dangerMode: true,
-                    buttons: {
-                        cancel: "ยกเลิก",
-                        confirm: "ยืนยัน",
-                    },
-                }).then((val) => {
-                    if (val) {
+                Swal.fire({
+                    title: 'ต้องการลบข้อมูลคุมทะเบียนนี้ใช่หรือไม่?',
+                    text:  "เรื่อง " + document.title,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'ยกเลิก',
+                    confirmButtonText: 'ลบ'
+                }).then((result) => {
+                    if (result.value) {
                         $.ajaxSetup({
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
@@ -304,12 +307,14 @@
                         $.ajax("/deleteFileAndData/" + document.id, {
                             type: 'POST',
                             success: function (data, status, xhr) {
-                                swal("รายงานผล", "ลบข้อมูลคุมทะเบียนสำเร็จแล้ว",
+                                Swal.fire("รายงานผล",
+                                    "ลบข้อมูลคุมทะเบียนสำเร็จแล้ว",
                                     "success");
                                 table.search('').columns().search('').draw();
                             },
                             error: function (jqXhr, textStatus, errorMessage) {
-                                swal("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
+                                Swal.fire("รายงานผล",
+                                    "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
                                     "error");
                             }
                         });

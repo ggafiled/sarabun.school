@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Document;
+use App\Enums\DocumentType;
 
 class DocumentObserver
 {
@@ -58,5 +59,25 @@ class DocumentObserver
     public function forceDeleted(Document $document)
     {
         //
+    }
+
+    public function creating (Document $document)
+    {
+        switch($document->document_type_id){
+            case DocumentType::Sending:
+                $document->run_no = $document->getDocumentLastIdFor(DocumentType::Sending);
+                break;
+            case DocumentType::Receiving:
+                $document->run_no = $document->getDocumentLastIdFor(DocumentType::Receiving);
+                break;
+            case DocumentType::Command:
+                $document->run_no = $document->getDocumentLastIdFor(DocumentType::Command);
+                break;
+            case DocumentType::Memorandum:
+                $document->run_no = $document->getDocumentLastIdFor(DocumentType::Memorandum);
+                break;
+            default:
+                return;
+        }
     }
 }

@@ -138,7 +138,7 @@
                     $('#run_no').val(data);
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
-                    swal("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
+                    Swal.fire("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
                         "error");
                 }
             });
@@ -164,8 +164,6 @@
             // for Dropzone to process the queue (instead of default form behavior):
             $("#submit-all").on("click", function (e) {
                 // Make sure that the form isn't actually being sent.
-                e.preventDefault();
-                e.stopPropagation();
                 var formData = new FormData();
                 formData.append("_token", "{{ csrf_token() }}");
                 formData.append("id", $("#id").val());
@@ -177,6 +175,7 @@
                 formData.append("user", "{{ Auth::user()->id }}");
                 formData.append("editmode", "{{ $editmode }}");
                 formData.append("note", $("#note").val());
+                $("#submit-all").prop('disabled', true);
 
                 if (dzClosure.getQueuedFiles().length > 0) {
                     dzClosure.processQueue();
@@ -194,17 +193,21 @@
                         contentType: false,
                         success: function (data, status, xhr) {
                             var today = new Date().toISOString().split('T')[0];
-                            swal("รายงานผล", "บันทึกทะเบียนบันทึกข้อความสำเร็จแล้ว", "success");
-                            $("#id").val('');
-                            $("#document_no").val('');
-                            $("#document_created_at").val(today);
-                            $("#title").val('');
-                            $("#note").val('');
-                            $("#document_no").focusTextToEnd();
-                            location.reload();
+                            Swal.fire("รายงานผล", "บันทึกทะเบียนบันทึกข้อความสำเร็จแล้ว",
+                                "success").then(function () {
+                                $("#id").val('');
+                                $("#document_no").val('');
+                                $("#document_created_at").val(today);
+                                $("#title").val('');
+                                $("#note").val('');
+                                $("#document_no").focusTextToEnd();
+                                $("#submit-all").prop('disabled', false);
+                                location.reload();
+                            });
                         },
                         error: function (jqXhr, textStatus, errorMessage) {
-                            swal("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
+                            $("#submit-all").prop('disabled', false);
+                            Swal.fire("รายงานผล", "มีบางอย่างผิดปกติโปรดลองอีกครั้ง",
                                 "error");
                         }
                     });
@@ -260,15 +263,17 @@
 
             this.on("success", function (file, responseText) {
                 var today = new Date().toISOString().split('T')[0];
-                swal("รายงานผล", "บันทึกทะเบียนบันทึกข้อความสำเร็จแล้ว", "success");
-                $("#id").val('');
-                $("#document_no").val('');
-                $("#document_created_at").val(today);
-                $("#title").val('');
-                $("#note").val('');
-                this.removeAllFiles();
-                $("#document_no").focusTextToEnd();
-                location.reload();
+                Swal.fire("รายงานผล", "บันทึกทะเบียนบันทึกข้อความสำเร็จแล้ว", "success").then(
+                    function () {
+                        $("#id").val('');
+                        $("#document_no").val('');
+                        $("#document_created_at").val(today);
+                        $("#title").val('');
+                        $("#note").val('');
+                        $("#document_no").focusTextToEnd();
+                        $("#submit-all").prop('disabled', false);
+                        location.reload();
+                    });
             });
         }
     }

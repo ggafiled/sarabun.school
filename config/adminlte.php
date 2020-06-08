@@ -286,8 +286,8 @@ return [
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'เปลี่ยนรหัสผ่าน',
-            'url'  => 'form/editmypassword',
+            'text' => 'แก้ไขข้อมูลส่วนตัว',
+            'url'  => 'form/editprofile',
             'icon' => 'fas fa-fw fa-lock',
         ]
     ],

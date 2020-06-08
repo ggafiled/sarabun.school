@@ -137,7 +137,7 @@
                     render: function (data, type, row) {
                         if (data == null || data.trim() == "") {
                             return "<div class='badge badge-warning'>ยังไม่ได้ยืนยันบัญชี</div>";
-                            
+
                         } else {
                             return "<div class='badge badge-success'>ยืนยันบัญชีแล้ว</div>";
                         }
@@ -161,15 +161,21 @@
             var tr = $(this).closest('tr');
             var row = table.row(tr);
             var user = table.row(row).data();
-            if (document != null) {
-                swal("ต้องการลบบัญชีการใช้งานนี้ใช่หรือไม่?", user.name, {
-                    dangerMode: true,
-                    buttons: {
-                        cancel: "ยกเลิก",
-                        confirm: "ยืนยัน",
-                    },
-                }).then((val) => {
-                    
+            if (user != null) {
+                Swal.fire({
+                    title: 'ต้องการลบบัญชีการใช้งานนี้ใช่หรือไม่?',
+                    text: "เรื่อง " + user.name,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'ยกเลิก',
+                    confirmButtonText: 'ลบ',
+                    focusCancel: true
+                }).then((result) => {
+                    if (result.value) {
+
+                    }
                 });
             }
         });
@@ -220,6 +226,5 @@
     div#tableUser_wrapper {
         width: 100% !important;
     }
-
 </style>
 @stop

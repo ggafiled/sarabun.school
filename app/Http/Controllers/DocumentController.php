@@ -31,7 +31,7 @@ class DocumentController extends Controller
         }else {
             $uploadedFile = $request->file('file');
             $document = new Document();   
-            $document->run_no = $request->get('run_no');
+            // $document->run_no = $request->get('run_no');
             $document->document_no = $request->get('document_no');
             $document->title = $request->get('title');
             $document->source = $request->get('source');
